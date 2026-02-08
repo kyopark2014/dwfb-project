@@ -59,23 +59,19 @@ if prompt := st.chat_input("메시지를 입력하세요."):
 아래와 같이 system prompt, model, tool 정보를 가지고 agent를 생성합니다.
 
 ```python
-def create_agent():
-    system = (
-        "당신의 이름은 서연이고, 질문에 대해 친절하게 답변하는 사려깊은 인공지능 도우미입니다."
-        "상황에 맞는 구체적인 세부 정보를 충분히 제공합니다." 
-        "모르는 질문을 받으면 솔직히 모른다고 말합니다."
-    )
-
-    model = get_model()
-
+def create_agent(system_prompt, tools):
+    if system_prompt==None:
+        system_prompt = (
+            "당신의 이름은 서연이고, 질문에 대해 친절하게 답변하는 사려깊은 인공지능 도우미입니다."
+            "상황에 맞는 구체적인 세부 정보를 충분히 제공합니다." 
+            "모르는 질문을 받으면 솔직히 모른다고 말합니다."
+        )
+    model = get_model()    
     agent = Agent(
         model=model,
-        system_prompt=system,
-        tools=[    
-            calculator, 
-            current_time,
-            use_aws    
-        ],
+        system_prompt=system_prompt,
+        tools=tools,
+        conversation_manager=conversation_manager
     )
     return agent
 ```
