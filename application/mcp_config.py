@@ -90,6 +90,18 @@ def load_config(mcp_type):
             }
         }    
     
+    elif mcp_type == "trade_info":
+        return {
+            "mcpServers": {
+                "trade_info": {
+                    "command": "python",
+                    "args": [
+                        f"{workingDir}/mcp_server_trade_info.py"
+                    ]
+                }
+            }
+        }    
+        
     elif mcp_type == "tavily-search":
         return {
             "mcpServers": {
