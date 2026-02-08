@@ -14,12 +14,10 @@ logging.basicConfig(
 logger = logging.getLogger("mcp-config")
 
 config = utils.load_config()
-print(f"config: {config}")
 
 aws_region = config["region"] if "region" in config else "us-west-2"
 projectName = config["projectName"] if "projectName" in config else "mcp"
 workingDir = os.path.dirname(os.path.abspath(__file__))
-logger.info(f"workingDir: {workingDir}")
 
 mcp_user_config = {}    
 def load_config(mcp_type):

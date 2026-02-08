@@ -57,7 +57,6 @@ workingDir = os.path.dirname(os.path.abspath(__file__))
 config_path = os.path.join(workingDir, "config.json")
 
 config = utils.load_config()
-print(f"config: {config}")
 
 bedrock_region = config.get("region", "us-west-2")
 projectName = config.get("projectName", "mcp-rag")
@@ -182,7 +181,6 @@ def traslation(chat, text, input_language, output_language):
     human = "<article>{text}</article>"
     
     prompt = ChatPromptTemplate.from_messages([("system", system), ("human", human)])
-    # print('prompt: ', prompt)
     
     chain = prompt | chat    
     try: 
@@ -192,10 +190,8 @@ def traslation(chat, text, input_language, output_language):
                 "output_language": output_language,
                 "text": text,
             }
-        )
-        
+        )        
         msg = result.content
-        # print('translated text: ', msg)
     except Exception:
         err_msg = traceback.format_exc()
         logger.info(f"error message: {err_msg}")     
@@ -243,13 +239,10 @@ def isKorean(text):
     # check korean
     pattern_hangul = re.compile('[\u3131-\u3163\uac00-\ud7a3]+')
     word_kor = pattern_hangul.search(str(text))
-    # print('word_kor: ', word_kor)
 
     if word_kor and word_kor != 'None':
-        # logger.info(f"Korean: {word_kor}")
         return True
     else:
-        # logger.info(f"Not Korean:: {word_kor}")
         return False
     
 def get_chat(extended_thinking):
@@ -324,7 +317,6 @@ def get_summary(docs):
     human = "<article>{text}</article>"
     
     prompt = ChatPromptTemplate.from_messages([("system", system), ("human", human)])
-    # print('prompt: ', prompt)
     
     chain = prompt | llm    
     try: 
@@ -380,7 +372,7 @@ def load_document(file_type, s3_file_name):
     return texts
 
 fileId = uuid.uuid4().hex
-# print('fileId: ', fileId)
+
 def get_summary_of_uploaded_file(file_name, st):
     file_type = file_name[file_name.rfind('.')+1:len(file_name)]            
     logger.info(f"file_type: {file_type}")
@@ -424,7 +416,6 @@ def get_summary_of_uploaded_file(file_name, st):
 
     global fileId
     fileId = uuid.uuid4().hex
-    # print('fileId: ', fileId)
 
     return msg
 
@@ -447,8 +438,6 @@ def load_csv_document(s3_file_name):
     docs = []
     n = 0
     for row in csv.DictReader(lines, delimiter=',',quotechar='"'):
-        # print('row: ', row)
-        #to_metadata = {col: row[col] for col in columns_to_metadata if col in row}
         values = {k: row[k] for k in columns if k in row}
         content = "\n".join(f"{k.strip()}: {v.strip()}" for k, v in values.items())
         doc = Document(
@@ -466,7 +455,6 @@ def load_csv_document(s3_file_name):
     return docs
 
 config = utils.load_config()
-print(f"config: {config}")
 
 bedrock_region = config["region"] if "region" in config else "us-west-2"
 projectName = config["projectName"] if "projectName" in config else "mcp-rag"
@@ -1452,8 +1440,7 @@ def get_tool_info(tool_name, tool_content):
     return content, urls, tool_references
 
 async def run_strands_agent(query, strands_tools, mcp_servers, history_mode, containers):
-    global tool_list, index
-    tool_list = []
+    global index
     index = 0
 
     image_url = []
@@ -1466,7 +1453,6 @@ async def run_strands_agent(query, strands_tools, mcp_servers, history_mode, con
         mcp_servers=mcp_servers, 
         historyMode=history_mode
     )
-    logger.info(f"tool_list: {tool_list}")    
 
     # run agent    
     final_result = current = ""

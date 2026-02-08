@@ -29,9 +29,6 @@ mode_descriptions = {
     ],    
     "Agent": [
         "Strands Agent SDK를 활용한 Agent를 이용합니다."
-    ],
-    "Agent (Chat)": [
-        "대화가 가능한 Strands Agent입니다."
     ]
 }
 
@@ -47,7 +44,7 @@ with st.sidebar:
     
     # radio selection
     mode = st.radio(
-        label="원하는 대화 형태를 선택하세요. ",options=['RAG', 'Agent', 'Agent (Chat)'], index=2
+        label="원하는 대화 형태를 선택하세요. ",options=['RAG', 'Agent'], index=1
     )   
     st.info(mode_descriptions[mode][0])    
     # print('mode: ', mode)
@@ -143,12 +140,10 @@ with st.sidebar:
     if modelName == 'Claude 3.7 Sonnet' or modelName == 'Claude 4 Sonnet' or modelName == 'Claude 4 Opus' or modelName == 'Claude 4.5 Sonnet' or modelName == 'Claude 4.5 Haiku':
         select_reasoning = st.checkbox('Reasoning', value=False)
         reasoningMode = 'Enable' if select_reasoning else 'Disable'
-        logger.info(f"reasoningMode: {reasoningMode}")
 
     uploaded_file = None
-    if mode=="RAG" or mode=="Agent" or mode=="Agent (Chat)":
+    if mode=="RAG" or mode=="Agent":
         st.subheader("📋 문서 업로드")
-        # print('fileId: ', chat.fileId)
         uploaded_file = st.file_uploader("RAG를 위한 파일을 선택합니다.", type=["pdf", "txt", "py", "md", "csv", "json"], key=chat.fileId)
     
     selected_strands_tools = [tool for tool, is_selected in strands_selections.items() if is_selected]
@@ -235,13 +230,6 @@ if uploaded_file is not None and clear_button==False:
 
         st.write(msg)
 
-def show_references(reference_docs):
-    if debugMode == "Enable" and reference_docs:
-        with st.expander(f"답변에서 참조한 {len(reference_docs)}개의 문서입니다."):
-            for i, doc in enumerate(reference_docs):
-                st.markdown(f"**{doc.metadata['name']}**: {doc.page_content}")
-                st.markdown("---")
-
 # Always show the chat input
 if prompt := st.chat_input("메시지를 입력하세요."):
     with st.chat_message("user"):  # display user message in chat message container
@@ -271,7 +259,9 @@ if prompt := st.chat_input("메시지를 입력하세요."):
 
         elif mode == 'RAG':            
             # knowlege base retrieval
-            response, reference_docs = chat.run_rag_with_knowledge_base(prompt, st)                           
+            response = chat.run_rag_with_knowledge_base(prompt, st)        
+
+            st.markdown(response)
 
             # retrieve and generate
             # containers = {
@@ -285,15 +275,6 @@ if prompt := st.chat_input("메시지를 입력하세요."):
 
         elif mode == 'Agent':
             history_mode = "Disable"
-            response, image_urls = asyncio.run(chat.run_strands_agent(
-                query=prompt, 
-                strands_tools=selected_strands_tools, 
-                mcp_servers=selected_mcp_servers, 
-                history_mode=history_mode, 
-                containers=containers))
-
-        elif mode == 'Agent (Chat)':
-            history_mode = "Enable"
             response, image_urls = asyncio.run(chat.run_strands_agent(
                 query=prompt, 
                 strands_tools=selected_strands_tools, 
