@@ -76,26 +76,35 @@ def create_agent(system_prompt, tools):
     return agent
 ```
 
-Agent는 stream으로 결과를 주므로, 아래와 같이 event에서 "data"만을 추출한 후에 full_response로 저장한 후에 markdown으로 표시합니다. 
+[chat.py](./application/chat.py)와 같이 Agent를 실행하고 stream으로 결과를 받아서 보여줍니다. 이때, 아래와 같이 event에서 "data"만을 추출한 후에 full_response로 저장한 후에 markdown으로 표시합니다. 
 
 ```python
-def run_strands_agent(question, history_mode, st):
-    agent = create_agent()
-    
-    message_placeholder = st.empty()
-    full_response = ""
+async def run_strands_agent(query, strands_tools, mcp_servers, containers):
+    await strands_agent.initiate_agent(
+        system_prompt=None, 
+        strands_tools=strands_tools, 
+        mcp_servers=mcp_servers
+    )
 
-    async def process_streaming_response():
-        nonlocal full_response
-        agent_stream = agent.stream_async(question)
+    final_result = current = ""
+    with strands_agent.mcp_manager.get_active_clients(mcp_servers) as _:
+        agent_stream = strands_agent.agent.stream_async(query)
+        
         async for event in agent_stream:
+            text = ""            
             if "data" in event:
-                full_response += event["data"]
-                message_placeholder.markdown(full_response)
+                text = event["data"]
+                logger.info(f"[data] {text}")
+                current += text
 
-    asyncio.run(process_streaming_response())
-
-    return full_response
+            elif "result" in event:
+                final = event["result"]                
+                message = final.message
+                if message:
+                    content = message.get("content", [])
+                    result = content[0].get("text", "")
+                    final_result = result
+    return final_result
 ```
 
 ### 대화 이력의 활용
