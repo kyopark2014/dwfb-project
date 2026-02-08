@@ -24,6 +24,9 @@ os.environ["DEV"] = "true"  # Skip user confirmation of get_user_input
 st.set_page_config(page_title='DWFB Agent', page_icon=None, layout="centered", initial_sidebar_state="auto", menu_items=None)
 
 mode_descriptions = {
+    "일상적인 대화": [
+        "대화이력을 바탕으로 챗봇과 일상의 대화를 편안히 즐길수 있습니다."
+    ],
     "RAG": [
         "Bedrock Knowledge Base를 이용해 구현한 RAG로 필요한 정보를 검색합니다."
     ],    
@@ -44,7 +47,7 @@ with st.sidebar:
     
     # radio selection
     mode = st.radio(
-        label="원하는 대화 형태를 선택하세요. ",options=['RAG', 'Agent'], index=1
+        label="원하는 대화 형태를 선택하세요. ",options=['일상적인 대화', 'RAG', 'Agent'], index=2
     )   
     st.info(mode_descriptions[mode][0])    
     # print('mode: ', mode)
