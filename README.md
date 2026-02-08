@@ -26,7 +26,7 @@ agent = Agent(
 
 ### Streamlit에서 agent의 실행
 
-[app.py](./application/app.py]에서 사용자가 "RAG", "Agent"을 선택할 수 있습니다. "RAG"는 llm으로 Knowledge Base로 구현한 RAG를 호출하는 구조이고, "Agent"은 Strands agent를 이용하여 MCP로 필요시 tool들을 이용하여 RAG등을 활용할 수 있습니다. Streamlit의 UI를 위하여 user의 입력과 결과인 response을 [Session State](https://docs.streamlit.io/develop/api-reference/caching-and-state/st.session_state)로 관리합니다. 
+[app.py](./application/app.py)와 같이 사용자가 "RAG", "Agent"을 선택할 수 있습니다. "RAG"는 llm으로 Knowledge Base로 구현한 RAG를 호출하는 구조이고, "Agent"은 Strands agent를 이용하여 MCP로 필요시 tool들을 이용하여 RAG등을 활용할 수 있습니다. Streamlit의 UI를 위하여 user의 입력과 결과인 response을 [Session State](https://docs.streamlit.io/develop/api-reference/caching-and-state/st.session_state)로 관리합니다. 
 
 ```python
 if prompt := st.chat_input("메시지를 입력하세요."):
