@@ -70,23 +70,19 @@ def isKorean(text):
     # check korean
     pattern_hangul = re.compile('[\u3131-\u3163\uac00-\ud7a3]+')
     word_kor = pattern_hangul.search(str(text))
-    # print('word_kor: ', word_kor)
 
     if word_kor and word_kor != 'None':
-        # logger.info(f"Korean: {word_kor}")
         return True
     else:
-        # logger.info(f"Not Korean:: {word_kor}")
         return False
 
 def get_chat(extended_thinking):
-    model_name = "Claude 4.0 Sonnet"
+    model_name = "Claude 4 Sonnet"
     model_type = "claude"
     models = info.get_model_info(model_name)
     model_id = models[0]["model_id"]
         
     profile = models[0]
-    # print('profile: ', profile)
         
     bedrock_region =  profile['bedrock_region']
     modelId = profile['model_id']
@@ -167,7 +163,6 @@ def traslation(chat, text, input_language, output_language):
     human = "<article>{text}</article>"
     
     prompt = ChatPromptTemplate.from_messages([("system", system), ("human", human)])
-    # print('prompt: ', prompt)
     
     chain = prompt | chat    
     try: 
@@ -177,10 +172,8 @@ def traslation(chat, text, input_language, output_language):
                 "output_language": output_language,
                 "text": text,
             }
-        )
-        
+        )        
         msg = result.content
-        # print('translated text: ', msg)
     except Exception:
         err_msg = traceback.format_exc()
         logger.info(f"error message: {err_msg}")     
@@ -218,7 +211,6 @@ def get_weather_info(city: str) -> str:
         lang = 'en' 
         units = 'metric' 
         api = f"https://api.openweathermap.org/data/2.5/weather?q={place}&APPID={apiKey}&lang={lang}&units={units}"
-        # print('api: ', api)
                 
         try:
             result = requests.get(api)
