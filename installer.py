@@ -455,14 +455,19 @@ def create_ec2_role(knowledge_base_role_arn: str) -> str:
                         "Effect": "Allow",
                         "Action": [
                             "bedrock:InvokeModel",
-                            "bedrock:InvokeModelWithResponseStream"
+                            "bedrock:InvokeModelWithResponseStream",
+                            "bedrock:GetFoundationModel",
+                            "bedrock:GetInferenceProfile",
+                            "bedrock:ListFoundationModels",
+                            "bedrock:ListInferenceProfiles"
                         ],
                         "Resource": [
                             "arn:aws:bedrock:*:*:inference-profile/*",
-                            "arn:aws:bedrock:us-west-2:*:foundation-model/*",
-                            "arn:aws:bedrock:us-east-1:*:foundation-model/*",
-                            "arn:aws:bedrock:us-east-2:*:foundation-model/*",
-                            "arn:aws:bedrock:ap-northeast-2:*:foundation-model/*"
+                            "arn:aws:bedrock:*::foundation-model/*",
+                            "arn:aws:bedrock:us-west-2::foundation-model/*",
+                            "arn:aws:bedrock:us-east-1::foundation-model/*",
+                            "arn:aws:bedrock:us-east-2::foundation-model/*",
+                            "arn:aws:bedrock:ap-northeast-2::foundation-model/*"
                         ]
                     }
                 ]
@@ -620,6 +625,23 @@ def create_ec2_role(knowledge_base_role_arn: str) -> str:
                             "logs:GetQueryResults",
                             "logs:StartQuery",
                             "logs:StopQuery"
+                        ],
+                        "Resource": ["*"]
+                    }
+                ]
+            }
+        },
+        {
+            "name": f"aws-marketplace-policy-for-{project_name}",
+            "document": {
+                "Version": "2012-10-17",
+                "Statement": [
+                    {
+                        "Effect": "Allow",
+                        "Action": [
+                            "aws-marketplace:ViewSubscriptions",
+                            "aws-marketplace:Subscribe",
+                            "aws-marketplace:Unsubscribe"
                         ],
                         "Resource": ["*"]
                     }
