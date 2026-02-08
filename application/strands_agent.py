@@ -41,9 +41,7 @@ capture_prefix = "captures"
 selected_strands_tools = []
 selected_mcp_servers = []
 
-history_mode = "Disable"
 aws_region = utils.bedrock_region
-
 
 #########################################################
 # Strands Agent 
@@ -526,7 +524,7 @@ def update_tools(strands_tools: list, mcp_servers: list):
 
     return tools
 
-def create_agent(system_prompt, tools, history_mode):
+def create_agent(system_prompt, tools):
     if system_prompt==None:
         system_prompt = (
             "당신의 이름은 서연이고, 질문에 대해 친절하게 답변하는 사려깊은 인공지능 도우미입니다."
@@ -538,22 +536,15 @@ def create_agent(system_prompt, tools, history_mode):
         system_prompt = "You are a helpful AI assistant."
 
     model = get_model()
-    if history_mode == "Enable":
-        logger.info("history_mode: Enable")
-        agent = Agent(
-            model=model,
-            system_prompt=system_prompt,
-            tools=tools,
-            conversation_manager=conversation_manager
-        )
-    else:
-        logger.info("history_mode: Disable")
-        agent = Agent(
-            model=model,
-            system_prompt=system_prompt,
-            tools=tools
-            #max_parallel_tools=2
-        )
+    
+    agent = Agent(
+        model=model,
+        system_prompt=system_prompt,
+        tools=tools,
+        conversation_manager=conversation_manager,
+        #max_parallel_tools=2
+    )
+
     return agent
 
 def get_tool_list(tools):
@@ -567,9 +558,9 @@ def get_tool_list(tools):
             tool_list.append(module_name)
     return tool_list
 
-async def initiate_agent(system_prompt, strands_tools, mcp_servers, historyMode):
+async def initiate_agent(system_prompt, strands_tools, mcp_servers):
     global agent, initiated
-    global selected_strands_tools, selected_mcp_servers, history_mode, tool_list
+    global selected_strands_tools, selected_mcp_servers, tool_list
 
     update_required = False
     if selected_strands_tools != strands_tools:
@@ -582,11 +573,6 @@ async def initiate_agent(system_prompt, strands_tools, mcp_servers, historyMode)
         update_required = True
         logger.info(f"mcp_servers: {mcp_servers}")
 
-    if history_mode != historyMode:
-        history_mode = historyMode
-        update_required = True
-        logger.info(f"history_mode: {history_mode}")
-
     if not initiated or update_required:
         mcp_manager.stop_agent_clients()
         
@@ -594,7 +580,7 @@ async def initiate_agent(system_prompt, strands_tools, mcp_servers, historyMode)
         tools = update_tools(strands_tools, mcp_servers)
         # logger.info(f"tools: {tools}")
 
-        agent = create_agent(system_prompt, tools, history_mode)
+        agent = create_agent(system_prompt, tools)
         tool_list = get_tool_list(tools)
 
         if not initiated:

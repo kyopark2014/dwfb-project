@@ -241,13 +241,6 @@ if prompt := st.chat_input("메시지를 입력하세요."):
     #logger.info(f"is_updated: {agent.is_updated}")
 
     with st.chat_message("assistant"):
-        containers = {
-            "tools": st.empty(),
-            "status": st.empty(),
-            "notification": [st.empty() for _ in range(1000)],
-            "key": st.empty()
-        }
-
         image_urls = []
 
         if mode == '일상적인 대화':
@@ -274,13 +267,19 @@ if prompt := st.chat_input("메시지를 입력하세요."):
             chat.save_chat_history(prompt, response)
 
         elif mode == 'Agent':
-            history_mode = "Disable"
-            response, image_urls = asyncio.run(chat.run_strands_agent(
-                query=prompt, 
-                strands_tools=selected_strands_tools, 
-                mcp_servers=selected_mcp_servers, 
-                history_mode=history_mode, 
-                containers=containers))
+            with st.status("thinking...", expanded=True, state="running") as status:
+                containers = {
+                    "tools": st.empty(),
+                    "status": st.empty(),
+                    "notification": [st.empty() for _ in range(1000)],
+                    "key": st.empty()
+                }
+
+                response, image_urls = asyncio.run(chat.run_strands_agent(
+                    query=prompt, 
+                    strands_tools=selected_strands_tools, 
+                    mcp_servers=selected_mcp_servers,
+                    containers=containers))
 
         if chat.debug_mode == 'Disable':
            st.markdown(response)

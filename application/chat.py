@@ -1439,7 +1439,7 @@ def get_tool_info(tool_name, tool_content):
 
     return content, urls, tool_references
 
-async def run_strands_agent(query, strands_tools, mcp_servers, history_mode, containers):
+async def run_strands_agent(query, strands_tools, mcp_servers, containers):
     global index
     index = 0
 
@@ -1450,8 +1450,7 @@ async def run_strands_agent(query, strands_tools, mcp_servers, history_mode, con
     await strands_agent.initiate_agent(
         system_prompt=None, 
         strands_tools=strands_tools, 
-        mcp_servers=mcp_servers, 
-        historyMode=history_mode
+        mcp_servers=mcp_servers
     )
 
     # run agent    
