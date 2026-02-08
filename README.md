@@ -257,23 +257,14 @@ Streamlit으로 구현한 [app.py](./application/app.py)에서 tool들을 선택
 
 ```python
 tools = []
-for mcp_tool in mcp_tools:
-    logger.info(f"mcp_tool: {mcp_tool}")
+for mcp_tool in mcp_servers:
     with mcp_manager.get_active_clients([mcp_tool]) as _:
-        if mcp_tool in mcp_manager.clients:
-            client = mcp_manager.clients[mcp_tool]
-            mcp_tools_list = client.list_tools_sync()
-            tools.extend(mcp_tools_list)
-```
+        client = mcp_manager.get_client(mcp_tool)
+        mcp_servers_list = client.list_tools_sync()
+        tools.extend(mcp_servers_list)
 
-tools 정보는 아래와 같이 agent 생성시 활용됩니다.
-
-```python
-agent = Agent(
-    model=model,
-    system_prompt=system,
-    tools=tools
-)
+agent = create_agent(system_prompt, tools)
+tool_list = get_tool_list(tools)
 ```
 
 생성된 agent는 아래와 같이 mcp_manager를 이용해 실행합니다.
