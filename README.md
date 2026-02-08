@@ -26,7 +26,7 @@ agent = Agent(
 
 ### Streamlit에서 agent의 실행
 
-[app.py](./application/app.py)와 같이 사용자가 "RAG", "Agent"을 선택할 수 있습니다. "RAG"는 llm으로 Knowledge Base로 구현한 RAG를 호출하는 구조이고, "Agent"은 Strands agent를 이용하여 MCP로 필요시 tool들을 이용하여 RAG등을 활용할 수 있습니다. Streamlit의 UI를 위하여 user의 입력과 결과인 response을 [Session State](https://docs.streamlit.io/develop/api-reference/caching-and-state/st.session_state)로 관리합니다. 
+[app.py](./application/app.py)와 같이 사용자가 "RAG", "Agent"을 선택할 수 있습니다. "Agent"은 Strands agent를 이용하여 MCP로 필요시 tool들을 이용하여 RAG등을 활용할 수 있습니다. Streamlit의 UI를 위하여 user의 입력과 결과인 response을 [Session State](https://docs.streamlit.io/develop/api-reference/caching-and-state/st.session_state)로 관리합니다. 
 
 ```python
 if prompt := st.chat_input("메시지를 입력하세요."):
@@ -41,19 +41,12 @@ if prompt := st.chat_input("메시지를 입력하세요."):
             "notification": [st.empty() for _ in range(1000)],
             "key": st.empty()
         }
-        if mode == 'RAG':            
-            response, reference_docs = chat.run_rag_with_knowledge_base(prompt, st)                           
-            chat.save_chat_history(prompt, response)
-
-        elif mode == 'Agent':
-            history_mode = "Disable"
+        if mode == 'Agent':
             response, image_urls = asyncio.run(chat.run_strands_agent(
                 query=prompt, 
                 strands_tools=selected_strands_tools, 
                 mcp_servers=selected_mcp_servers, 
-                history_mode=history_mode, 
                 containers=containers))
-
         st.session_state.messages.append({
             "role": "assistant", 
             "content": response,
