@@ -306,6 +306,23 @@ def create_knowledge_base_role() -> str:
     }
     attach_inline_policy(role_name, f"bedrock-agent-bedrock-policy-for-{project_name}", bedrock_policy)
     
+    # AWS Marketplace policy (required for model access via inference profiles)
+    marketplace_policy = {
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Effect": "Allow",
+                "Action": [
+                    "aws-marketplace:ViewSubscriptions",
+                    "aws-marketplace:Subscribe",
+                    "aws-marketplace:Unsubscribe"
+                ],
+                "Resource": ["*"]
+            }
+        ]
+    }
+    attach_inline_policy(role_name, f"aws-marketplace-policy-for-{project_name}", marketplace_policy)
+    
     return role_arn
 
 
