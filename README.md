@@ -486,10 +486,6 @@ MCP로 wikipedia를 설정하고 "strand에 대해 설명해주세요."라고 �
 
 <img src="https://github.com/user-attachments/assets/da48a443-bd53-4c2f-a083-cfcd4e954360" width="600">
 
-"Image generation" MCP를 선택하고, "AWS의 한국인 solutions architect의 모습을 그려주세요."라고 입력하면 아래와 같이 이미지를 생성할 수 있습니다.
-
-<img src="https://github.com/user-attachments/assets/a0b46a64-5cb7-4261-82df-b5d4095fdfd2" width="600">
-
 
 ## Reference
 
