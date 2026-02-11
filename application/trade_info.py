@@ -59,6 +59,7 @@ SUBJECT_TO_TICKER: Dict[str, str] = {
     "한화시스템": "272210.KS",  # 한화시스템 Corp
     "농심": "004370.KS",  # 농심 Corp
     "동원": "009150.KS",  # 동원 Corp
+    "SK": "034730.KS",  # SK Corp
 }
 
 stocks = {}
