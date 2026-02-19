@@ -31,9 +31,9 @@ CDK 스택과 동등한 AWS 인프라를 프로그래밍 방식으로 배포합�
 
 ```python
 # 기본 설정
-project_name = "es-us"          # 프로젝트 이름 (최소 3자)
+project_name = "dwfb"          # 프로젝트 이름 (최소 3자)
 region = "us-west-2"            # AWS 리전
-git_name = "es-us-project"      # Git 저장소 이름
+git_name = "dwfb-project"      # Git 저장소 이름
 
 # 자동 생성되는 변수
 account_id = sts_client.get_caller_identity()["Account"]
