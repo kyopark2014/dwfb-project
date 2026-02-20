@@ -664,6 +664,28 @@ def create_ec2_role(knowledge_base_role_arn: str) -> str:
                     }
                 ]
             }
+        },
+        {
+            "name": f"ecs-policy-for-{project_name}",
+            "document": {
+                "Version": "2012-10-17",
+                "Statement": [
+                    {
+                        "Effect": "Allow",
+                        "Action": [
+                            "ecs:RegisterContainerInstance",
+                            "ecs:DeregisterContainerInstance",
+                            "ecs:DiscoverPollEndpoint",
+                            "ecs:Poll",
+                            "ecs:StartTelemetrySession",
+                            "ecs:Submit*",
+                            "ecs:UpdateContainerInstancesState",
+                            "ecs:CreateCluster"
+                        ],
+                        "Resource": ["*"]
+                    }
+                ]
+            }
         }
     ]
     
