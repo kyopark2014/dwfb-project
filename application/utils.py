@@ -228,3 +228,28 @@ def sync_data_source():
         except Exception:
             err_msg = traceback.format_exc()
             logger.info(f"error message: {err_msg}")
+
+# api key to use notion
+notion_key = ""
+def get_notion_key():
+    global notion_key
+
+    if not notion_key:
+        try:
+            get_notion_api_secret = secretsmanager.get_secret_value(
+                SecretId=f"notionapikey-{projectName}"
+            )
+            #logger.info('get_perplexity_api_secret: ', get_perplexity_api_secret)
+            secret = json.loads(get_notion_api_secret['SecretString'])
+            #logger.info('secret: ', secret)
+
+            if "notion_api_key" in secret:
+                notion_key = secret['notion_api_key']
+                # logger.info('updated notion_key: ', notion_key)
+
+        except Exception as e: 
+            logger.info(f"nova act credential is required: {e}")
+            # raise e
+            pass
+    return notion_key
+

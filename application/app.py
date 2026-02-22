@@ -55,7 +55,7 @@ with st.sidebar:
     strands_tools = ["calculator", "current_time"]
     mcp_options = [
         "basic", "knowledge base", "tavily-search", "aws document", "use_aws",
-        "code interpreter", "filesystem", "trade_info", "사용자 설정"
+        "code interpreter", "filesystem", "trade_info", "notion", "사용자 설정"
     ]
     mcp_selections = {}
     default_mcp_selections = ["basic", "tavily-search"]
