@@ -297,6 +297,45 @@ Notion에서는 [Official Notion MCP Server](https://github.com/makenotion/notio
 
 <img width="664" height="340" alt="image" src="https://github.com/user-attachments/assets/872e7054-1135-4dde-aa6a-756a7ad928b0" />
 
+5) 아래와 같이 secret을 생성합니다.
+   
+```python
+secrets_client = boto3.client("secretsmanager", region_name=region)
+response = secrets_client.create_secret(
+    Name="notionapikey-dwfb",
+    Description="secret for notion api key",
+    SecretString=json.dumps(secret_config["secret_value"])
+)
+```
+
+생성된 secret은 아래와 같습니다.
+
+<img width="1870" height="310" alt="noname" src="https://github.com/user-attachments/assets/65e4a7e3-a30e-4730-8736-e8dfbc0ca33e" />
+
+6) [mcp.config](./application/mcp.config)에서 아래와 같이 설정합니다.
+
+```python
+token = get_notion_key()
+return {
+    "mcpServers": {
+        "notionApi": {
+            "command": "npx",
+            "args": ["-y", "@notionhq/notion-mcp-server"],
+            "env": {
+                "NOTION_TOKEN": token
+            }
+        }
+    }
+}
+
+def get_notion_key():
+    get_notion_api_secret = secretsmanager.get_secret_value(
+        SecretId=f"notionapikey-{projectName}"
+    )
+    secret = json.loads(get_notion_api_secret['SecretString'])
+
+    return notion_key = secret['notion_api_key']
+```
 
 
 ### Streamlit에 맞게 출력문 조정하기
