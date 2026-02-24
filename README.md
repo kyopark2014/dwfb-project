@@ -312,7 +312,7 @@ response = secrets_client.create_secret(
 
 <img width="500" src="https://github.com/user-attachments/assets/65e4a7e3-a30e-4730-8736-e8dfbc0ca33e" />
 
-6) [mcp.config](./application/mcp.config)에서 아래와 같이 설정합니다.
+6) [mcp_config.py](./application/mcp_config.py)에서 아래와 같이 설정합니다.
 
 ```python
 token = get_notion_key()
