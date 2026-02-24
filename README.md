@@ -295,7 +295,7 @@ Notion에서는 [Official Notion MCP Server](https://github.com/makenotion/notio
 
 4) 사용권한 Tab에서 적절한 페이지를 선택합니다.
 
-<img width="664" height="340" alt="image" src="https://github.com/user-attachments/assets/872e7054-1135-4dde-aa6a-756a7ad928b0" />
+<img width="400" alt="image" src="https://github.com/user-attachments/assets/872e7054-1135-4dde-aa6a-756a7ad928b0" />
 
 5) 아래와 같이 secret을 생성합니다.
    
