@@ -295,7 +295,7 @@ Notion에서는 [Official Notion MCP Server](https://github.com/makenotion/notio
 
 4) 사용권한 Tab에서 적절한 페이지를 선택합니다.
 
-<img width="400" alt="image" src="https://github.com/user-attachments/assets/872e7054-1135-4dde-aa6a-756a7ad928b0" />
+<img width="600" alt="image" src="https://github.com/user-attachments/assets/872e7054-1135-4dde-aa6a-756a7ad928b0" />
 
 5) 아래와 같이 secret을 생성합니다.
    
@@ -310,7 +310,7 @@ response = secrets_client.create_secret(
 
 생성된 secret은 아래와 같습니다.
 
-<img width="1870" height="310" alt="noname" src="https://github.com/user-attachments/assets/65e4a7e3-a30e-4730-8736-e8dfbc0ca33e" />
+<img width="500" src="https://github.com/user-attachments/assets/65e4a7e3-a30e-4730-8736-e8dfbc0ca33e" />
 
 6) [mcp.config](./application/mcp.config)에서 아래와 같이 설정합니다.
 
