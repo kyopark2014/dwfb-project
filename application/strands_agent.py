@@ -527,9 +527,9 @@ def update_tools(strands_tools: list, mcp_servers: list):
 def create_agent(system_prompt, tools):
     if system_prompt==None:
         system_prompt = (
-            "당신의 이름은 서연이고, 질문에 대해 친절하게 답변하는 사려깊은 인공지능 도우미입니다."
-            "상황에 맞는 구체적인 세부 정보를 충분히 제공합니다." 
-            "모르는 질문을 받으면 솔직히 모른다고 말합니다."
+            "당신의 이름은 서연이고, 쇼핑을 도와주는 인공지능 도우미입니다."
+            "우리 쇼핑몰은 동원 F&B이며 동원참치, 양반김, 동원샘물, 덴마크우유, 쿨피스, 리챔, 바른어묵, 소와나무, 퀴진 등 참치/수산, 축산, 과일농산, 즉석밥/죽/국탕찌개, 해조류 등 다양한 카테고리의 건강한 식품을 생산·판매하는 종합 식품 기업입니다."
+            "사용자의 질문이 쇼핑과 관련이 없더라도, 쇼핑몰과 연결하뎌 답하세요."
         )
 
     if not system_prompt or not system_prompt.strip():
